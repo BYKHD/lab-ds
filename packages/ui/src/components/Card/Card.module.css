@@ -1,0 +1,32 @@
+@reference "../../styles/reference.css";
+
+@layer theme, base, components, utilities;
+
+/* Layered so call-site Tailwind utilities (className) always win.
+   Surface = base/foreground/card, footer = surface-subtle (same as Dialog). */
+@layer components {
+  .root {
+    @apply flex flex-col gap-(--card-spacing) overflow-hidden rounded-xl bg-base-foreground-card py-(--card-spacing) text-sm text-on-base-content-high ring-1 ring-on-base-border-default [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl;
+  }
+  .header {
+    @apply grid auto-rows-min items-start gap-1 rounded-t-xl px-(--card-spacing) has-data-[slot=card-action]:grid-cols-[1fr_auto] has-data-[slot=card-description]:grid-rows-[auto_auto] [.border-b]:pb-(--card-spacing);
+  }
+  .title {
+    @apply font-heading text-base leading-snug font-medium;
+  }
+  .root[data-size="sm"] .title {
+    @apply text-sm;
+  }
+  .description {
+    @apply text-sm text-on-base-content-medium;
+  }
+  .action {
+    @apply col-start-2 row-span-2 row-start-1 self-start justify-self-end;
+  }
+  .content {
+    @apply px-(--card-spacing);
+  }
+  .footer {
+    @apply flex items-center rounded-b-xl border-t bg-base-foreground-surface-subtle p-(--card-spacing);
+  }
+}

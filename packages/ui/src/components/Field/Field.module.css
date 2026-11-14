@@ -1,0 +1,69 @@
+@reference "../../styles/reference.css";
+
+@layer theme, base, components, utilities;
+
+/* Layered so call-site Tailwind utilities (className) always win.
+   shadcn's group/peer variants are rewritten as plain descendant selectors. */
+@layer components {
+  .set {
+    @apply flex flex-col gap-4 has-[>[data-slot=checkbox-group]]:gap-3 has-[>[data-slot=radio-group]]:gap-3;
+  }
+  .legend {
+    @apply mb-1.5 font-medium text-on-base-content-high data-[variant=label]:text-sm data-[variant=legend]:text-base;
+  }
+  .group {
+    @apply @container/field-group flex w-full flex-col gap-5 data-[slot=checkbox-group]:gap-3 *:data-[slot=field-group]:gap-4;
+  }
+
+  /* field + orientation */
+  .field {
+    @apply flex w-full gap-2 data-[invalid=true]:text-danger-content-default;
+  }
+  .vertical {
+    @apply flex-col *:w-full [&>.sr-only]:w-auto;
+  }
+  .horizontal {
+    @apply flex-row items-center has-[>[data-slot=field-content]]:items-start *:data-[slot=field-label]:flex-auto has-[>[data-slot=field-content]]:[&>[role=checkbox],[role=radio]]:mt-px;
+  }
+  .responsive {
+    @apply flex-col *:w-full @md/field-group:flex-row @md/field-group:items-center @md/field-group:*:w-auto @md/field-group:has-[>[data-slot=field-content]]:items-start @md/field-group:*:data-[slot=field-label]:flex-auto [&>.sr-only]:w-auto @md/field-group:has-[>[data-slot=field-content]]:[&>[role=checkbox],[role=radio]]:mt-px;
+  }
+
+  .content {
+    @apply flex flex-1 flex-col gap-0.5 leading-snug;
+  }
+
+  /* label; becomes a selectable card when it wraps a Field */
+  .label {
+    @apply flex w-fit gap-2 leading-snug has-data-checked:border-primary-border-default has-data-checked:bg-primary-foreground-subtle has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-base-foreground-action-hover has-[>[data-slot=field]]:has-[:focus-visible]:border-primary-border-strong has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 has-[>[data-slot=field]]:has-[:focus-visible]:ring-primary-border-strong/30 *:data-[slot=field]:p-2.5;
+  }
+  .title {
+    @apply flex w-fit items-center gap-2 text-sm font-medium;
+  }
+  .field[data-disabled="true"] .label,
+  .field[data-disabled="true"] .title {
+    @apply opacity-50;
+  }
+
+  .description {
+    @apply text-left text-sm leading-normal font-normal text-on-base-content-medium last:mt-0 nth-last-2:-mt-1 [[data-variant=legend]+&]:-mt-1.5 [&>a]:underline [&>a]:underline-offset-4 [&>a:hover]:text-primary-content-default;
+  }
+  .field[data-orientation="horizontal"] .description {
+    @apply text-balance;
+  }
+
+  .separator {
+    @apply relative -my-2 h-5 text-sm;
+  }
+  .separatorContent {
+    @apply relative mx-auto block w-fit bg-base-foreground-ground px-2 text-on-base-content-medium;
+  }
+  /* Match the surface when used inside a Card (e.g. "Or continue with"). */
+  [data-slot="card"] .separatorContent {
+    @apply bg-base-foreground-card;
+  }
+
+  .error {
+    @apply text-sm font-normal text-danger-content-default;
+  }
+}

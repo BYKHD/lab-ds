@@ -1,0 +1,60 @@
+@reference "../../styles/reference.css";
+
+@layer theme, base, components, utilities;
+
+/* Layered so call-site Tailwind utilities (className) always win. */
+@layer components {
+  .root {
+    @apply relative flex h-8 w-full min-w-0 items-center rounded-comp-input border border-on-base-border-default bg-base-foreground-action transition-colors outline-none in-data-[slot=combobox-content]:focus-within:border-inherit in-data-[slot=combobox-content]:focus-within:ring-0 has-disabled:border-on-base-border-disable has-disabled:bg-base-foreground-disable has-[[data-slot=input-group-control]:focus-visible]:border-primary-border-strong has-[[data-slot=input-group-control]:focus-visible]:ring-1 has-[[data-slot=input-group-control]:focus-visible]:ring-primary-border-strong has-[[data-slot][aria-invalid=true]]:border-danger-border-strong has-[[data-slot][aria-invalid=true]]:ring-3 has-[[data-slot][aria-invalid=true]]:ring-danger-border-strong/20 has-[>[data-align=block-end]]:h-auto has-[>[data-align=block-end]]:flex-col has-[>[data-align=block-start]]:h-auto has-[>[data-align=block-start]]:flex-col has-[>textarea]:h-auto has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:[&>input]:pr-1.5 has-[>[data-align=inline-start]]:[&>input]:pl-1.5;
+  }
+
+  /* addon + align */
+  .addon {
+    @apply flex h-auto cursor-text items-center justify-center gap-2 py-1.5 text-sm font-medium text-on-base-content-medium select-none [&>kbd]:rounded-xs [&>svg:not([class*='size-'])]:size-4;
+  }
+  .root[data-disabled="true"] .addon {
+    @apply opacity-50;
+  }
+  .inline-start {
+    @apply order-first pl-2 has-[>button]:ml-[-0.3rem] has-[>kbd]:ml-[-0.15rem];
+  }
+  .inline-end {
+    @apply order-last pr-2 has-[>button]:mr-[-0.3rem] has-[>kbd]:mr-[-0.15rem];
+  }
+  .block-start {
+    @apply order-first w-full justify-start px-2.5 pt-2 [.border-b]:pb-2;
+  }
+  .block-end {
+    @apply order-last w-full justify-start px-2.5 pb-2 [.border-t]:pt-2;
+  }
+  .root:has(> input) .block-start {
+    @apply pt-2;
+  }
+  .root:has(> input) .block-end {
+    @apply pb-2;
+  }
+
+  /* Overrides on top of Button / Input / Textarea: scoped under .root so they
+     out-rank those modules' single-class rules. */
+  .root .button {
+    @apply flex min-w-0 items-center gap-2 text-sm shadow-none;
+  }
+  .root .button.button-xs {
+    @apply h-6 gap-1 rounded-xs px-1.5 [&>svg:not([class*='size-'])]:size-3.5;
+  }
+  .root .button.button-icon-xs {
+    @apply size-6 rounded-xs p-0 has-[>svg]:p-0;
+  }
+  .root .button.button-icon-sm {
+    @apply size-8 p-0 has-[>svg]:p-0;
+  }
+  .text {
+    @apply flex items-center gap-2 text-sm text-on-base-content-medium [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4;
+  }
+  .root .control {
+    @apply flex-1 rounded-none border-0 bg-transparent shadow-none ring-0 hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 disabled:bg-transparent aria-invalid:ring-0;
+  }
+  .root .textarea {
+    @apply resize-none py-2;
+  }
+}

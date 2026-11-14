@@ -1,0 +1,4 @@
+/* Build-only: what component CSS modules @reference for @apply. Not shipped. */
+@import "tailwindcss";
+@import "shadcn/tailwind.css";
+@import "./theme.css";

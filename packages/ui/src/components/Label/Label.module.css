@@ -1,0 +1,16 @@
+@reference "../../styles/reference.css";
+
+@layer theme, base, components, utilities;
+
+/* Layered so call-site Tailwind utilities (className) always win. */
+@layer components {
+  .root {
+    @apply flex items-center gap-2 text-sm leading-none font-medium select-none;
+  }
+  /* Disabled when inside a disabled group, or after a disabled control. */
+  [data-disabled="true"] .root,
+  :disabled ~ .root,
+  [data-disabled] ~ .root {
+    @apply pointer-events-none opacity-50;
+  }
+}

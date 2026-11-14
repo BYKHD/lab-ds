@@ -1,0 +1,31 @@
+@reference "../../styles/reference.css";
+
+@layer theme, base, components, utilities;
+
+/* Layered so call-site Tailwind utilities (className) always win.
+   Colors follow Figma's Component collection (badge/color/*). */
+@layer components {
+  .root {
+    @apply inline-flex h-5 w-fit shrink-0 items-center justify-center gap-1 overflow-hidden rounded-rounded border border-transparent px-2 py-0.5 text-xs font-medium whitespace-nowrap transition-all focus-visible:ring-[3px] focus-visible:ring-primary-border-strong/30 has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 aria-invalid:border-danger-border-strong aria-invalid:ring-danger-border-strong/20 [&>svg]:pointer-events-none [&>svg]:size-3!;
+  }
+
+  /* variant */
+  .default {
+    @apply bg-primary-foreground-default text-on-primary-content-high [a]:hover:bg-primary-foreground-hover;
+  }
+  .secondary {
+    @apply bg-secondary-foreground-subtle text-secondary-content-default [a]:hover:bg-secondary-foreground-subtle-hover;
+  }
+  .destructive {
+    @apply bg-danger-foreground-subtle text-danger-content-default focus-visible:ring-danger-border-strong/20 [a]:hover:bg-danger-foreground-subtle-hover;
+  }
+  .outline {
+    @apply border-on-base-border-default text-on-base-content-high [a]:hover:bg-base-foreground-action-hover;
+  }
+  .ghost {
+    @apply text-on-base-content-high hover:bg-base-foreground-inset;
+  }
+  .link {
+    @apply text-on-cta-content-tertiary-default underline-offset-4 hover:underline;
+  }
+}

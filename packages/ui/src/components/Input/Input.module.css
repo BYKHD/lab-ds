@@ -1,0 +1,12 @@
+@reference "../../styles/reference.css";
+
+@layer theme, base, components, utilities;
+
+/* Layered so call-site Tailwind utilities (className) always win.
+   Colors follow Figma's Component collection (input/color/*); focus = 2px
+   Primary/Border/Strong (1px border + 1px ring). */
+@layer components {
+  .root {
+    @apply h-8 w-full min-w-0 rounded-comp-input border border-on-base-border-default bg-base-foreground-action px-2.5 py-1 text-base text-on-base-content-high transition-colors outline-none file:inline-flex file:h-6 file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-on-base-content-high placeholder:text-on-base-content-low hover:bg-base-foreground-action-hover focus-visible:border-primary-border-strong focus-visible:bg-base-foreground-action focus-visible:ring-1 focus-visible:ring-primary-border-strong disabled:pointer-events-none disabled:cursor-not-allowed disabled:border-on-base-border-disable disabled:bg-base-foreground-disable disabled:text-on-base-content-low disabled:placeholder:text-on-base-content-disable aria-invalid:border-danger-border-strong aria-invalid:hover:border-danger-border-default aria-invalid:focus-visible:border-danger-border-strong aria-invalid:focus-visible:ring-danger-border-strong md:text-sm;
+  }
+}

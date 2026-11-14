@@ -1,0 +1,10 @@
+@reference "../../styles/reference.css";
+
+@layer theme, base, components, utilities;
+
+/* Layered so call-site Tailwind utilities (className) always win. */
+@layer components {
+  .root {
+    @apply shrink-0 bg-on-base-border-default data-horizontal:h-px data-horizontal:w-full data-vertical:w-px data-vertical:self-stretch;
+  }
+}

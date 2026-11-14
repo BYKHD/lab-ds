@@ -1,0 +1,63 @@
+@reference "../../styles/reference.css";
+
+@layer theme, base, components, utilities;
+
+/* Layered so call-site Tailwind utilities (className) always win.
+   Colors follow Figma's Component collection (btn/color/*):
+   default→primary, secondary→secondary, outline→default, ghost→ghost,
+   destructive→secondary-danger, link→tertiary content.
+   `danger` modifier on default → primary-danger (Button__Primary Danger=Yes). */
+@layer components {
+  .root {
+    @apply inline-flex shrink-0 items-center justify-center gap-inner-md rounded-comp-cta border border-transparent bg-clip-padding font-cta text-cta-m font-cta-normal tracking-cta whitespace-nowrap transition-all outline-none select-none focus-visible:ring-2 focus-visible:ring-primary-border-strong focus-visible:ring-offset-2 focus-visible:ring-offset-base-foreground-ground/75 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none aria-invalid:border-danger-border-strong aria-invalid:ring-3 aria-invalid:ring-danger-border-strong/20 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-comp-xxs;
+  }
+
+  /* variant */
+  .default {
+    @apply shadow-comp-cta border-cta-border-primary-default bg-cta-foreground-primary-default text-on-cta-content-primary-default hover:border-cta-border-primary-hover hover:bg-cta-foreground-primary-hover active:border-cta-border-primary-pressed active:bg-cta-foreground-primary-pressed disabled:border-cta-border-primary-disable disabled:bg-cta-foreground-primary-disable disabled:text-on-cta-content-primary-disable;
+  }
+  .default.danger {
+    @apply border-transparent bg-danger-foreground-default text-on-danger-content-high hover:border-transparent hover:bg-danger-foreground-hover active:border-transparent active:bg-danger-foreground-pressed disabled:border-transparent disabled:bg-danger-foreground-disable disabled:text-on-danger-content-high;
+  }
+  .outline {
+    @apply border-on-base-border-default bg-base-foreground-action text-on-base-content-high hover:border-on-base-border-hover hover:bg-base-foreground-action-hover active:border-on-base-border-pressed active:bg-base-foreground-action-pressed aria-expanded:bg-base-foreground-action-hover disabled:border-on-base-border-disable disabled:bg-base-foreground-disable disabled:text-on-base-content-disable;
+  }
+  .secondary {
+    @apply border-cta-border-secondary-default bg-cta-foreground-secondary-default text-on-cta-content-secondary-default hover:border-cta-border-secondary-hover hover:bg-cta-foreground-secondary-hover hover:text-on-cta-content-secondary-hover active:border-cta-border-secondary-pressed active:bg-cta-foreground-secondary-pressed active:text-on-cta-content-secondary-pressed aria-expanded:bg-cta-foreground-secondary-hover disabled:border-cta-border-secondary-disable disabled:bg-cta-foreground-secondary-disable disabled:text-on-cta-content-secondary-disable;
+  }
+  .ghost {
+    @apply text-on-base-content-high hover:bg-base-foreground-action-hover active:bg-base-foreground-action-pressed aria-expanded:bg-base-foreground-action-hover disabled:text-on-base-content-disable;
+  }
+  .destructive {
+    @apply border-danger-border-default bg-danger-foreground-subtle text-danger-content-default hover:border-danger-border-hover hover:bg-danger-foreground-subtle-hover hover:text-danger-content-hover active:border-danger-border-pressed active:bg-danger-foreground-subtle-pressed active:text-danger-content-pressed disabled:border-danger-border-disable disabled:text-danger-content-disable;
+  }
+  .link {
+    @apply text-on-cta-content-tertiary-default underline-offset-4 hover:underline disabled:text-on-base-content-disable;
+  }
+
+  /* size — Figma Large/Medium/Small = lg/default/sm */
+  .size-default {
+    @apply h-comp-md min-w-comp-xxl px-pad-sm-nudge text-cta-m;
+  }
+  .size-xs {
+    @apply h-6 gap-1 rounded-sm px-2 text-xs in-data-[slot=button-group]:rounded-comp-cta has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3;
+  }
+  .size-sm {
+    @apply h-comp-sm min-w-comp-xl px-pad-sm text-cta-s [&_svg:not([class*='size-'])]:size-comp-xxxs;
+  }
+  .size-lg {
+    @apply h-comp-lg min-w-comp-xxxl px-pad-md text-cta-l [&_svg:not([class*='size-'])]:size-comp-xs;
+  }
+  .size-icon {
+    @apply size-comp-md;
+  }
+  .size-icon-xs {
+    @apply size-6 rounded-sm in-data-[slot=button-group]:rounded-comp-cta [&_svg:not([class*='size-'])]:size-3;
+  }
+  .size-icon-sm {
+    @apply size-comp-sm [&_svg:not([class*='size-'])]:size-comp-xxxs;
+  }
+  .size-icon-lg {
+    @apply size-comp-lg [&_svg:not([class*='size-'])]:size-comp-xs;
+  }
+}

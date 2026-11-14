@@ -1,0 +1,29 @@
+@reference "../../styles/reference.css";
+
+@layer theme, base, components, utilities;
+
+/* Layered so call-site Tailwind utilities (className) always win.
+   Same input/color/* mapping as Input. */
+@layer components {
+  .container {
+    @apply flex items-center has-disabled:opacity-50;
+  }
+  .input {
+    @apply disabled:cursor-not-allowed;
+  }
+  .group {
+    @apply flex items-center rounded-comp-input has-aria-invalid:border-danger-border-strong has-aria-invalid:ring-3 has-aria-invalid:ring-danger-border-strong/20;
+  }
+  .slot {
+    @apply relative flex size-8 items-center justify-center border-y border-r border-on-base-border-default bg-base-foreground-action text-sm text-on-base-content-high transition-all outline-none first:rounded-l-comp-input first:border-l last:rounded-r-comp-input aria-invalid:border-danger-border-strong data-[active=true]:z-10 data-[active=true]:border-primary-border-strong data-[active=true]:ring-1 data-[active=true]:ring-primary-border-strong data-[active=true]:aria-invalid:border-danger-border-strong data-[active=true]:aria-invalid:ring-danger-border-strong;
+  }
+  .caret {
+    @apply pointer-events-none absolute inset-0 flex items-center justify-center;
+  }
+  .caret-line {
+    @apply h-4 w-px animate-caret-blink bg-on-base-content-high duration-1000;
+  }
+  .separator {
+    @apply flex items-center [&_svg:not([class*='size-'])]:size-4;
+  }
+}

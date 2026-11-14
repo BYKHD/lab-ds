@@ -1,0 +1,20 @@
+@reference "../../styles/reference.css";
+
+@layer theme, base, components, utilities;
+
+/* Layered so call-site Tailwind utilities (className) always win.
+   Surface comes from Card; the image area shows base/foreground/inset until the photo loads. */
+@layer components {
+  .image {
+    @apply aspect-square w-full bg-base-foreground-inset object-cover;
+  }
+  .brand {
+    @apply text-xs text-on-base-content-medium;
+  }
+  .name {
+    @apply line-clamp-2;
+  }
+  .price {
+    @apply text-base font-semibold text-on-base-content-high;
+  }
+}
