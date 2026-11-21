@@ -4,13 +4,17 @@
 
 This file overrides the curriculum `AGENTS.md` two folders up. That file says there is no code; this folder holds the code.
 
-> **Status:** `packages/ui` is scaffolded with the 14 Daidai components from `week-1-lab` (Week 1). `apps/storybook` does not exist yet (Week 2), so the Storybook scripts and story tests below are not runnable yet. Publishing is Week 4. When you change the setup, update this file so the commands match the real `package.json` scripts.
+> **Status:** `packages/ui` is scaffolded with the 14 Daidai components from `week-1-lab` (Week 1). `apps/storybook` is set up (Week 2); Button has stories, the other components don't yet. Publishing is Week 4. When you change the setup, update this file so the commands match the real `package.json` scripts.
 
 ## Layout (npm workspaces)
 
 - `package.json` at the root declares `workspaces` and holds the root scripts. Run every command from the root.
-- `packages/ui/` is the published package (`lab-ds`). Components live in `src/components/<Name>/` as `<Name>.tsx` + `<Name>.module.css` + `index.ts`, and each `*.stories.tsx` and `*.test.tsx` file sits beside its component.
-- `apps/storybook/` is the review app (Storybook 10, `@storybook/react-vite`). It is private and never published. Its `main.ts` reads stories from `../../packages/ui/src/**/*.stories.tsx` and imports the package CSS, so stories render with real tokens.
+- `packages/ui/` is the published package (`lab-ds`). Components live in `src/components/<Name>/` as `<Name>.tsx` + `<Name>.module.css` + `index.ts`, and each `*.stories.tsx`, `*.test.tsx`, and `<Name>.md` (usage guideline) file sits beside its component.
+
+## Component guidelines
+
+**Before implementing anything that touches a component, read its `src/components/<Name>/<Name>.md` first, every time.** That covers changing the component itself, writing its stories or tests, and using it inside another component (e.g. `Button` in `Dialog`). Follow its rules over general habits. If there is no `.md` for that component yet, go by the source and stories.
+- `apps/storybook/` is the review app (Storybook 10, `@storybook/react-vite`). It is private and never published. Its `.storybook/main.ts` reads stories from `packages/ui/src/**/*.stories.tsx` and adds `@tailwindcss/vite` so the CSS modules compile live. `.storybook/preview.css` imports Tailwind plus the *source* `theme.css` (not `dist/`), so stories render with real tokens without a rebuild. The toolbar's Theme switch toggles `.dark` on `<html>`.
 
 ## Commands
 
@@ -20,9 +24,10 @@ npm run build                       # → npm run build -w packages/ui (tsup: ES
 npm run typecheck -w packages/ui    # tsc --noEmit
 npm run storybook                   # → npm run storybook -w apps/storybook
 npm run build-storybook
-npm test                            # Vitest (root vitest.config.ts); story tests join once Storybook exists
+npm test                            # Vitest (root vitest.config.ts): unit (jsdom) + storybook (Chromium via Playwright) projects
 npx vitest run packages/ui/src/components/Button/Button.test.tsx -t "renders"   # one test
 npx vitest run --project=storybook  # story tests only
+npx vitest run --project=unit       # *.test.tsx only
 npm pack --dry-run -w packages/ui   # check what would ship
 ```
 

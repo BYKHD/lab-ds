@@ -1,0 +1,9 @@
+/* Mirrors what a consumer does: Tailwind + lab-ds tokens. Uses the source
+   theme (not dist/styles.css) so token edits show up without a rebuild. */
+@import "tailwindcss";
+@import "../../../packages/ui/src/styles/theme.css";
+
+/* Consumers supply --font-sans (e.g. next/font); stand in with system fonts. */
+:root {
+  --font-sans: ui-sans-serif, system-ui, -apple-system, sans-serif;
+}
