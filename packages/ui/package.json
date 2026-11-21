@@ -1,7 +1,7 @@
 {
   "name": "lab-ds",
   "version": "0.1.0",
-  "description": "Daidai design system: React components on Base UI + Tailwind CSS v4.",
+  "description": "Daidai design system (B): Tailwind-first UI kit.",
   "license": "MIT",
   "type": "module",
   "sideEffects": [
