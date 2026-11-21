@@ -3,6 +3,7 @@ import { IconArrowRight, IconPlus } from "@tabler/icons-react"
 import { expect, fn, userEvent, within } from "storybook/test"
 
 import { Button, type ButtonSize, type ButtonVariant } from "./Button"
+import guideline from "./Button.md?raw"
 
 const variants: ButtonVariant[] = [
   "default",
@@ -19,6 +20,10 @@ const meta = {
   title: "Components/Button",
   component: Button,
   tags: ["autodocs"],
+  parameters: {
+    // Button.md is the usage guideline; the docs page already shows the "# Button" title.
+    docs: { description: { component: guideline.replace(/^# .*\n+/, "") } },
+  },
   args: {
     children: "Button",
     variant: "default",

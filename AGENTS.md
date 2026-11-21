@@ -4,17 +4,19 @@
 
 This file overrides the curriculum `AGENTS.md` two folders up. That file says there is no code; this folder holds the code.
 
-> **Status:** `packages/ui` is scaffolded with the 14 Daidai components from `week-1-lab` (Week 1). `apps/storybook` is set up (Week 2); Button has stories, the other components don't yet. Publishing is Week 4. When you change the setup, update this file so the commands match the real `package.json` scripts.
+> **Status:** `packages/ui` is scaffolded with the 14 Daidai components from `week-1-lab` (Week 1). `apps/storybook` is set up (Week 2), and every component has stories and a `<Name>.md` usage guideline. Publishing is Week 4. When you change the setup, update this file so the commands match the real `package.json` scripts.
 
 ## Layout (npm workspaces)
 
 - `package.json` at the root declares `workspaces` and holds the root scripts. Run every command from the root.
 - `packages/ui/` is the published package (`lab-ds`). Components live in `src/components/<Name>/` as `<Name>.tsx` + `<Name>.module.css` + `index.ts`, and each `*.stories.tsx`, `*.test.tsx`, and `<Name>.md` (usage guideline) file sits beside its component.
+- `apps/storybook/` is the review app (Storybook 10, `@storybook/react-vite`). It is private and never published. Its `.storybook/main.ts` reads stories from `packages/ui/src/**/*.stories.tsx` and adds `@tailwindcss/vite` so the CSS modules compile live. `.storybook/preview.css` imports Tailwind plus the *source* `theme.css` (not `dist/`), so stories render with real tokens without a rebuild. The toolbar's Theme switch toggles `.dark` on `<html>`.
 
 ## Component guidelines
 
-**Before implementing anything that touches a component, read its `src/components/<Name>/<Name>.md` first, every time.** That covers changing the component itself, writing its stories or tests, and using it inside another component (e.g. `Button` in `Dialog`). Follow its rules over general habits. If there is no `.md` for that component yet, go by the source and stories.
-- `apps/storybook/` is the review app (Storybook 10, `@storybook/react-vite`). It is private and never published. Its `.storybook/main.ts` reads stories from `packages/ui/src/**/*.stories.tsx` and adds `@tailwindcss/vite` so the CSS modules compile live. `.storybook/preview.css` imports Tailwind plus the *source* `theme.css` (not `dist/`), so stories render with real tokens without a rebuild. The toolbar's Theme switch toggles `.dark` on `<html>`.
+- **Before implementing anything that touches a component, read its `src/components/<Name>/<Name>.md` first, every time.** That covers changing the component itself, writing its stories or tests, and using it inside another component (e.g. `Button` in `Dialog`). Follow its rules over general habits. If there is no `.md` for that component yet, go by the source and stories.
+- **Keep the `.md` in sync with the code.** When a change adds, removes, or renames a variant, size, prop, or export, or changes behaviour, a state, or a default that the `.md` describes, update the `.md` in the same change. A guideline that contradicts the code is a bug.
+- **When the `.md` changes, update `<Name>.stories.tsx` in the same change.** The stories show the guideline on the Storybook docs page (`import guideline from "./<Name>.md?raw"`, passed as `parameters.docs.description.component`), so a component with a `.md` must have that import. The `.md`'s example and the story names it mentions must match the stories: if the guideline adds or changes an example, variant, or state, add or update the story for it.
 
 ## Commands
 
