@@ -1,193 +1,126 @@
 # Button
 
-Triggers an action: submit a form, open a dialog, save, delete. For moving to another page, use a link (or a link styled as a button; see [Links that look like buttons](#links-that-look-like-buttons)).
+Triggers an action, such as submitting a form, opening a dialog, saving, or deleting.
 
-```tsx
-import { Button } from "lab-ds"
+## When to use
 
-<Button onClick={save}>Save changes</Button>
-```
+- For any action on the current page: "Save changes", "Create project", "Delete project…".
+- To submit a form or confirm a dialog.
+- To open a dialog or menu.
 
-Built on Base UI's [`Button`](https://base-ui.com/react/components/button), so it renders a native `<button>` and accepts every native button prop (`type`, `disabled`, `onClick`, `aria-*`, …).
+## When not to use
 
-## Quick rules
+- To go to another page. Use a link, styled as a button if it needs to look like one.
+- For a status or label that does nothing when clicked. Use `Badge`.
+- For an on/off choice. Use `Checkbox`.
+- Inside running text when the action should read like a link. Use the `link` variant, or a real link if it navigates.
 
-These are the rules to check every Button against. They're written to be followed literally by people and by LLM agents.
+## Rules
 
 1. **One `default` (primary) Button per view or section.** Everything else is `secondary`, `outline`, or `ghost`.
-2. **Pick the variant by importance, not by color.** Use the [variant table](#variants) below.
-3. **Destructive actions:** `danger` for the main action that confirms something irreversible, `variant="destructive"` for a less prominent destructive action. See [Danger vs destructive](#danger-vs-destructive).
-4. **`danger` only goes with `variant="default"`.** It has no styling on any other variant.
-5. **Use `sm`, `default`, or `lg`.** `xs` / `icon-xs` exist for dense UI but sit outside the Figma scale.
-6. **Icon-only Buttons need an `aria-label`.**
-7. **Labels are verbs:** "Save changes", "Delete project", not "OK" or "Yes".
-8. **Set `type="submit"` explicitly** on a form's submit Button, and `type="button"` on other Buttons inside a `<form>`.
-9. **Don't hard-code colors, heights, or radii in `className`.** If a variant doesn't fit, change the tokens in `theme.css` or add a variant; don't override per call site.
-10. **Navigation is a link, not a Button with `onClick={() => router.push(...)}`.**
+2. **Pick the variant by importance, not by color.** See the variant table below.
+3. **Destructive actions:** `danger` for the main action that confirms something irreversible, `variant="destructive"` for a less prominent destructive action.
+4. **`danger` only works with `variant="default"`.** It has no effect on any other variant.
+5. **Use `sm`, `default`, or `lg`.** `xs` exists for dense UI but is outside the Figma scale.
+6. **Icon-only Buttons need an `aria-label`** that says what they do.
+7. **Labels are verbs** that say what happens: "Save changes", "Delete project", not "OK" or "Yes".
+8. **Use the same verb in the trigger and the confirm Button:** "Delete project…" opens a dialog whose confirm Button says "Delete project".
+9. **Sentence case, 1–3 words, no trailing punctuation.** Use "…" only when the Button opens a step that asks for more input or confirmation. Labels never wrap.
+10. **Primary action last** (on the right) in dialogs and forms: Cancel, then Save.
+11. **Buttons in the same row share a size**, and match the size of inputs beside them.
+12. **Don't change colors, heights, or corners per Button.** If no variant fits, change the tokens or ask for a new variant.
 
-## Variants
+## Props and variants
 
-| `variant` | Emphasis | Use for | Example |
-| --- | --- | --- | --- |
-| `default` | Highest | The main action of a view, form, or dialog. One per section. | "Save changes", "Create project" |
-| `secondary` | High | An important action next to the primary, or the main action where solid primary would be too loud. | "Save draft" |
-| `outline` | Medium | Neutral actions; the cancel/back action next to a primary. | "Cancel", "Export" |
-| `ghost` | Low | Toolbars, table rows, repeated actions, icon buttons where a border adds noise. | Row "Edit" icon, toolbar actions |
-| `destructive` | Medium | A destructive action that isn't the main focus. | "Delete" in a settings row, "Remove member" |
-| `link` | Lowest | An inline action in text or a dense footer that should read like a link but performs an action. | "Resend code" |
-
-Figma mapping (from `btn/color/*` in the Component collection): `default` → Primary, `secondary` → Secondary, `outline` → Default, `ghost` → Ghost, `destructive` → Secondary Danger, `link` → Tertiary, `default` + `danger` → Primary Danger.
-
-### Danger vs destructive
-
-| | `danger` (on `variant="default"`) | `variant="destructive"` |
+| Prop | Values | Default |
 | --- | --- | --- |
-| Look | Solid red | Subtle red background, red text and border |
-| Use for | The **primary** action that commits an irreversible change, usually the confirm button in a dialog | A **secondary** destructive action that starts the flow, or a destructive action that isn't the page's focus |
-| Example | Dialog: "Delete project" (confirm) | Settings row: "Delete project…" (opens the dialog) |
+| `variant` | `default`, `secondary`, `outline`, `ghost`, `destructive`, `link` | `default` |
+| `size` | `xs`, `sm`, `default`, `lg`, `icon-xs`, `icon-sm`, `icon`, `icon-lg` | `default` |
+| `danger` | `true`, `false` | `false` |
+| `disabled` | `true`, `false` | `false` |
 
-```tsx
-// Settings page: starts the flow
-<Button variant="destructive" onClick={openDialog}>Delete project…</Button>
+### Variants
 
-// Confirmation dialog: commits it
-<Button variant="outline" onClick={close}>Cancel</Button>
-<Button danger onClick={deleteProject}>Delete project</Button>
-```
+| `variant` | Emphasis | Use for | Example | Figma name |
+| --- | --- | --- | --- | --- |
+| `default` | Highest | The main action of a view, form, or dialog. One per section. | "Save changes" | Primary |
+| `secondary` | High | An important action next to the primary, or the main action where a solid primary would be too loud. | "Save draft" | Secondary |
+| `outline` | Medium | Neutral actions; Cancel or Back next to a primary. | "Cancel", "Export" | Default |
+| `ghost` | Low | Toolbars, table rows, repeated actions, icon buttons where a border adds noise. | Row "Edit" icon | Ghost |
+| `destructive` | Medium | A destructive action that isn't the main focus, or that starts a destructive flow. | "Delete project…" in settings | Secondary Danger |
+| `link` | Lowest | An inline action that should read like a link. | "Resend code" | Tertiary |
+| `default` + `danger` | Highest | The confirm Button that commits an irreversible change, usually in a dialog. | "Delete project" | Primary Danger |
 
 Don't:
 
-- `<Button variant="outline" danger>`: `danger` does nothing on non-default variants.
-- Use `danger` for actions that are undoable (archive, hide). Use `outline` or `secondary`.
+- Put `danger` on any variant except `default`. It does nothing there.
+- Use `danger` for actions that can be undone (archive, hide). Use `outline` or `secondary`.
 - Put two red Buttons side by side.
 
-## Sizes
+### Sizes
 
-| `size` | Figma | Use for |
-| --- | --- | --- |
-| `lg` | Large | Hero CTAs, marketing pages, mobile primary actions |
-| `default` | Medium | Most forms, dialogs, and pages |
-| `sm` | Small | Compact layouts, cards, inline with inputs of size `sm` |
-| `xs` | not in Figma | Dense UI only (toolbars, table cells, button groups). **Prefer `sm`.** |
+| `size` | Height | Figma | Use for |
+| --- | --- | --- | --- |
+| `lg` | 48px | Large | Hero actions, marketing pages, main actions on mobile |
+| `default` | 40px | Medium | Most forms, dialogs, and pages |
+| `sm` | 32px | Small | Compact layouts, cards, next to small inputs |
+| `xs` | 24px | not in Figma | Dense UI only (toolbars, table cells). Prefer `sm`. |
 
-Icon-only sizes are square and match the text sizes: `icon-lg`, `icon` (= `default`), `icon-sm`, `icon-xs`.
+Icon-only sizes are square and match the text sizes: `icon-lg` (48px), `icon` (40px), `icon-sm` (32px), `icon-xs` (24px).
 
-> `xs` and `icon-xs` use fixed Tailwind values (`h-6`, `rounded-sm`, `size-3` icons) instead of design tokens, so they won't follow token changes. Use them only when `sm` doesn't fit.
+TODO: `xs` and `icon-xs` don't use design tokens for height, corners, or icon size, so they won't follow token changes.
 
-Keep Buttons that sit together the same size. Match the Button size to the size of inputs in the same row.
+### Icons
 
-## Icons
-
-Pass an SVG icon as a child. The Button sizes it for you per `size`; add your own `size-*` class to override.
-
-```tsx
-import { IconPlus, IconArrowRight } from "@tabler/icons-react"
-
-<Button>
-  <IconPlus data-icon="inline-start" />
-  New item
-</Button>
-
-<Button variant="outline">
-  Continue
-  <IconArrowRight data-icon="inline-end" />
-</Button>
-```
-
-- Mark the icon's position with `data-icon="inline-start"` or `data-icon="inline-end"`, so padding stays balanced.
-- Leading icons reinforce the action (plus for create). Trailing icons show direction (arrow for next step, chevron for menus).
+- An icon can sit before the label (to reinforce the action, like a plus for "New") or after it (to show direction, like an arrow for "Continue").
 - At most one icon per Button with a label.
+- Icons are sized to match the Button.
 
-### Icon-only Buttons
+### States
 
-Use an `icon*` size and always give an accessible name:
+The Button shows these on its own:
 
-```tsx
-<Button variant="ghost" size="icon" aria-label="Delete row">
-  <IconTrash />
-</Button>
-```
-
-Pair with a tooltip when the icon's meaning isn't obvious.
-
-## States
-
-The Button styles these automatically. Don't recreate them with classes.
-
-| State | How to get it | Notes |
+| State | When | Notes |
 | --- | --- | --- |
-| Hover / pressed | Pointer | Pressed also nudges the Button down 1px (not for Buttons with `aria-haspopup`). |
-| Focus | Keyboard | Visible focus ring (`focus-visible`). Never remove it. |
-| Disabled | `disabled` | Not clickable, removed from tab order. Add `focusableWhenDisabled` if users need to reach it (e.g. to read a tooltip explaining why). |
-| Invalid | `aria-invalid` | Red border and ring. For Buttons acting as form controls (e.g. a picker trigger). |
-| Expanded | `aria-expanded` | Keeps the hover background while a menu or popover it controls is open (`outline`, `secondary`, `ghost`). |
+| Hover / pressed | Pointer | Pressed nudges the Button down 1px. |
+| Focus | Keyboard | A visible focus ring. Never hide it. |
+| Disabled | `disabled` | Can't be clicked or reached with Tab. Prefer explaining why an action is unavailable over silently disabling it. |
+| Invalid | `aria-invalid` | Red border and ring, for a Button that acts as a form control (e.g. a picker). |
+| Expanded | While a menu it opens is shown | Keeps the hover color (`outline`, `secondary`, `ghost`). |
 
-**No built-in loading state.** While an action runs, set `disabled` and change the label (e.g. "Saving…"), or put a spinner icon in the `inline-start` slot.
+There is no loading state. While an action runs, disable the Button and change its label ("Saving…").
 
-Prefer explaining why an action is unavailable over silently disabling it.
+## Tokens used
 
-## Content
+| Token group | Where |
+| --- | --- |
+| `--color-cta-foreground-primary-*`, `--color-cta-border-primary-*`, `--color-on-cta-content-primary-*` | `default` fill, border, and text (default, hover, pressed, disabled) |
+| `--color-danger-foreground-*`, `--color-on-danger-content-high` | `default` + `danger` fill and text |
+| `--color-cta-foreground-secondary-*`, `--color-cta-border-secondary-*`, `--color-on-cta-content-secondary-*` | `secondary` |
+| `--color-base-foreground-action-*`, `--color-on-base-border-*`, `--color-on-base-content-high` | `outline`, and `ghost` hover |
+| `--color-base-foreground-disable`, `--color-on-base-content-disable` | Disabled `outline`, `ghost`, `link` |
+| `--color-danger-foreground-subtle-*`, `--color-danger-border-*`, `--color-danger-content-*` | `destructive` |
+| `--color-on-cta-content-tertiary-default` | `link` text |
+| `--color-primary-border-strong` | Focus ring |
+| `--color-danger-border-strong` | Invalid border and ring |
+| `--radius-comp-cta` (0.5rem) | Corners |
+| `--shadow-comp-cta` | Shadow on `default` |
+| `--spacing-comp-*`, `--spacing-pad-*`, `--spacing-inner-md` | Heights, minimum widths, padding, icon gap |
+| `--text-cta-s`, `--text-cta-m`, `--text-cta-l`, `--font-weight-cta-normal`, `--tracking-cta`, `--font-cta` | Label text for `sm`, `default`, `lg` |
 
-- Start with a verb and say what happens: "Save changes", "Send invite", "Delete project".
-- Sentence case, no trailing punctuation. Use "…" only when the Button opens a step that asks for more input or confirmation ("Delete project…").
-- Keep it short: 1–3 words. Buttons don't wrap (`whitespace-nowrap`).
-- Use the same verb in the trigger and the confirm Button: "Delete project…" → "Delete project", not "Yes".
+All color tokens have dark-mode values and switch automatically.
 
-## Layout
+## Example
 
-- In dialogs and forms, put the primary action last (right side in LTR): `Cancel` then `Save`.
-- Space Buttons with your layout's gap utilities; don't add margins to the Button.
-- To make a Button full width, add `className="w-full"`. Layout utilities (`w-full`, margins, `self-*`) in `className` are fine; color, height, and radius overrides are not.
-
-## Links that look like buttons
-
-For navigation, render a link. Two options:
+From the `Sizes` story: an icon-only Button, named with `aria-label`.
 
 ```tsx
-import Link from "next/link"
-import { Button, buttonVariants } from "lab-ds"
+import { IconPlus } from "@tabler/icons-react"
+import { Button } from "lab-ds"
 
-// 1. Style any element with buttonVariants (preferred for Next.js Link)
-<Link href="/projects/new" className={buttonVariants({ size: "lg" })}>
-  New project
-</Link>
-
-// 2. Base UI render prop (this library uses `render`, not `asChild`)
-<Button render={<a href="/docs" />} nativeButton={false} variant="outline">
-  Read the docs
+<Button size="icon" aria-label="Add">
+  <IconPlus />
 </Button>
 ```
 
-`buttonVariants({ variant, size, danger })` takes the same style props as `Button` and returns a class string.
-
-## API
-
-```ts
-type ButtonProps = ButtonPrimitive.Props & {
-  variant?: "default" | "outline" | "secondary" | "ghost" | "destructive" | "link" // default: "default"
-  size?: "default" | "xs" | "sm" | "lg" | "icon" | "icon-xs" | "icon-sm" | "icon-lg" // default: "default"
-  danger?: boolean // default: false; styled only with variant="default"
-}
-```
-
-Exports: `Button`, `buttonVariants`, and the types `ButtonVariant`, `ButtonSize`, `ButtonStyleProps`.
-
-Rendered data attributes, for tests and parent selectors: `data-slot="button"`, `data-variant`, `data-size`, `data-danger` (present only when `danger`).
-
-`className` merges after the variant classes, and component styles live in `@layer components`, so Tailwind utilities passed in `className` win.
-
-## Accessibility
-
-- Renders a native `<button>`: Enter and Space activate it, and it's in the tab order.
-- Every Button needs an accessible name: visible text, or `aria-label` for icon-only Buttons.
-- Don't put interactive elements inside a Button.
-- Focus ring uses `primary-border-strong` with an offset; don't hide it with `outline-none` or `ring-0`.
-- Color is never the only signal: destructive Buttons also say what they destroy in their label.
-
-## For contributors
-
-- Source: `Button.tsx`, styles in `Button.module.css` (CSS-module classes per variant/size, not `cva`).
-- All colors, heights, paddings, and radii come from tokens in `src/styles/theme.css` except the `xs` sizes.
-- Used internally by `Dialog` and `InputGroup`; check them when changing variants or sizes.
-- Stories: `Button.stories.tsx` (Default, Variants, Sizes, WithIcon, Danger, Disabled, Invalid, Focused). Tests: `Button.test.tsx`.
-- Removing or renaming a variant, size, or prop is a **major** version change.
+The stories also show `Default`, `Variants`, `WithIcon`, `Danger`, `Disabled`, `Invalid`, and `Focused`. For a `danger` Button in a confirmation dialog, see the `DestructiveConfirmation` story under Dialog.

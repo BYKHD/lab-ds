@@ -58,12 +58,12 @@ function DialogContent({
         {showCloseButton && (
           <DialogPrimitive.Close
             data-slot="dialog-close"
+            aria-label="Close"
             render={
               <Button variant="ghost" size="icon-sm" className={styles.close} />
             }
           >
             <IconX />
-            <span className="sr-only">Close</span>
           </DialogPrimitive.Close>
         )}
       </DialogPrimitive.Popup>
