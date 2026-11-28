@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite"
 import { IconCreditCard, IconUser } from "@tabler/icons-react"
-import { expect, userEvent, within } from "storybook/test"
+import { expect, userEvent, waitFor, within } from "storybook/test"
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./Tabs"
 import guideline from "./Tabs.md?raw"
@@ -46,7 +46,8 @@ export const Default: Story = {
     await expect(activity).toHaveAttribute("aria-selected", "false")
     await userEvent.keyboard("{Enter}")
     await expect(activity).toHaveAttribute("aria-selected", "true")
-    await expect(canvas.getByRole("tabpanel")).toHaveTextContent("Mina renamed the project.")
+    // The old panel stays mounted until its exit animation ends.
+    await waitFor(() => expect(canvas.getByRole("tabpanel")).toHaveTextContent("Mina renamed the project."))
   },
 }
 
