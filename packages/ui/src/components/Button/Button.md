@@ -68,7 +68,7 @@ Don't:
 
 Icon-only sizes are square and match the text sizes: `icon-lg` (48px), `icon` (40px), `icon-sm` (32px), `icon-xs` (24px).
 
-TODO: `xs` and `icon-xs` don't use design tokens for height, corners, or icon size, so they won't follow token changes.
+TODO: `xs` and `icon-xs` don't use design tokens for height or icon size, so they won't follow token changes.
 
 ### Icons
 
@@ -103,7 +103,7 @@ There is no loading state. While an action runs, disable the Button and change i
 | `--color-on-cta-content-tertiary-default` | `link` text |
 | `--color-primary-border-strong` | Focus ring |
 | `--color-danger-border-strong` | Invalid border and ring |
-| `--radius-comp-cta` (0.5rem) | Corners |
+| `--radius-comp-cta` (15rem, fully rounded) | Corners, every size |
 | `--shadow-comp-cta` | Shadow on `default` |
 | `--spacing-comp-*`, `--spacing-pad-*`, `--spacing-inner-md` | Heights, minimum widths, padding, icon gap |
 | `--text-cta-s`, `--text-cta-m`, `--text-cta-l`, `--font-weight-cta-normal`, `--tracking-cta`, `--font-cta` | Label text for `sm`, `default`, `lg` |

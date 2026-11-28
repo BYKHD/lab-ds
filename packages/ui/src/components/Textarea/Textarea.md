@@ -40,7 +40,7 @@ It accepts every native textarea prop. The ones that change how it looks:
 | `--color-primary-border-strong` | Focus border and ring |
 | `--color-base-foreground-disable`, `--color-on-base-border-disable`, `--color-on-base-content-low`, `--color-on-base-content-disable` | Disabled background, border, text, placeholder |
 | `--color-danger-border-strong` / `--color-danger-border-default` | Invalid border, and on hover |
-| `--radius-comp-input` (0.5rem) | Corners |
+| `--radius-md` (0.5rem) | Corners (not `--radius-comp-input`: a pill shape doesn't fit multi-line text) |
 
 All color tokens have dark-mode values and switch automatically.
 
