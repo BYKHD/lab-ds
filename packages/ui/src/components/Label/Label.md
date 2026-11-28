@@ -38,7 +38,7 @@ Label sets no color tokens of its own; it uses the surrounding text color.
 From the `Default` story:
 
 ```tsx
-import { Input, Label } from "lab-ds"
+import { Input, Label } from "@bykhd/lab-ds"
 
 <Label htmlFor="name">Project name</Label>
 <Input id="name" />

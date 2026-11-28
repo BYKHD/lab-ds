@@ -64,7 +64,7 @@ From the `WithIcon` story:
 
 ```tsx
 import { IconCheck } from "@tabler/icons-react"
-import { Badge } from "lab-ds"
+import { Badge } from "@bykhd/lab-ds"
 
 <Badge variant="secondary">
   <IconCheck data-icon="inline-start" />

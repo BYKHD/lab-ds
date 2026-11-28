@@ -116,7 +116,7 @@ From the `Sizes` story: an icon-only Button, named with `aria-label`.
 
 ```tsx
 import { IconPlus } from "@tabler/icons-react"
-import { Button } from "lab-ds"
+import { Button } from "@bykhd/lab-ds"
 
 <Button size="icon" aria-label="Add">
   <IconPlus />

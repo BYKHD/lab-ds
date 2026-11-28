@@ -89,7 +89,7 @@ TODO: shadcn's original gives the selected tab a border and a tinted fill in dar
 From the `Default` story:
 
 ```tsx
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "lab-ds"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@bykhd/lab-ds"
 
 <Tabs defaultValue="overview">
   <TabsList>

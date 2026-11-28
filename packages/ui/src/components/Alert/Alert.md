@@ -67,7 +67,7 @@ From the `WithAction` story: an icon, a title, a description, and a small outlin
 
 ```tsx
 import { IconInfoCircle } from "@tabler/icons-react"
-import { Alert, AlertAction, AlertDescription, AlertTitle, Button } from "lab-ds"
+import { Alert, AlertAction, AlertDescription, AlertTitle, Button } from "@bykhd/lab-ds"
 
 <Alert>
   <IconInfoCircle />

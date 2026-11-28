@@ -65,7 +65,7 @@ Label text uses the `Label` component's styles. All color tokens have dark-mode 
 From the `WithError` story:
 
 ```tsx
-import { Field, FieldError, FieldLabel, Input } from "lab-ds"
+import { Field, FieldError, FieldLabel, Input } from "@bykhd/lab-ds"
 
 <Field data-invalid="true">
   <FieldLabel htmlFor="email-err">Email</FieldLabel>

@@ -64,7 +64,7 @@ From the `Default` story:
 
 ```tsx
 import { REGEXP_ONLY_DIGITS } from "input-otp"
-import { InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot } from "lab-ds"
+import { InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot } from "@bykhd/lab-ds"
 
 <InputOTP maxLength={6} pattern={REGEXP_ONLY_DIGITS} aria-label="Verification code">
   <InputOTPGroup>

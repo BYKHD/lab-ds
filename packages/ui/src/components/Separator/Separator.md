@@ -37,7 +37,7 @@ The token has a dark-mode value and switches automatically.
 From the `Vertical` story:
 
 ```tsx
-import { Separator } from "lab-ds"
+import { Separator } from "@bykhd/lab-ds"
 
 <div style={{ display: "flex", alignItems: "center", gap: 12, height: 20 }}>
   <span>Docs</span>

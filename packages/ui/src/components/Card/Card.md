@@ -65,7 +65,7 @@ All color tokens have dark-mode values and switch automatically.
 From the `Default` story:
 
 ```tsx
-import { Button, Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "lab-ds"
+import { Button, Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@bykhd/lab-ds"
 
 <Card>
   <CardHeader>

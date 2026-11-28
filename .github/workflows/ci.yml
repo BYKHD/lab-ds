@@ -1,0 +1,56 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main, develop]
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Component files in sync (AGENTS.md rules)
+        run: |
+          fail=0
+          for dir in packages/ui/src/components/*/; do
+            n=$(basename "$dir")
+            for f in "$n.tsx" "$n.module.css" "index.ts" "$n.md" "$n.stories.tsx"; do
+              [ -f "$dir$f" ] || { echo "::error file=$dir::$n is missing $f"; fail=1; }
+            done
+            grep -q "./$n.md?raw" "$dir$n.stories.tsx" 2>/dev/null \
+              || { echo "::error file=$dir$n.stories.tsx::$n stories don't import ./$n.md?raw"; fail=1; }
+            grep -q "components/$n\"" packages/ui/src/index.ts \
+              || { echo "::error file=packages/ui/src/index.ts::$n is not exported"; fail=1; }
+          done
+          exit $fail
+
+      - run: npm run typecheck -w packages/ui
+
+      - run: npx vitest run --project=unit
+
+      - run: npx playwright install --with-deps chromium
+
+      - run: npx vitest run --project=storybook
+
+      - run: npm run build
+
+      - name: dist/index.js starts with "use client"
+        run: head -n 1 packages/ui/dist/index.js | grep -q '"use client"'
+
+      - run: npm pack --dry-run -w packages/ui
