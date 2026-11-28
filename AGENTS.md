@@ -72,7 +72,7 @@ To publish a beta by hand instead (e.g. if the publish step failed), download th
 
 ```bash
 gh run download <run-id> --dir beta          # → beta/lab-ds-x.y.z-beta.N/bykhd-lab-ds-x.y.z-beta.N.tgz
-npm publish beta/lab-ds-*/bykhd-lab-ds-*.tgz --tag beta --access public
+npm publish ./beta/lab-ds-*/bykhd-lab-ds-*.tgz --tag beta --access public   # keep the ./
 ```
 
 **Stable** (on `main`, after `develop` is merged):

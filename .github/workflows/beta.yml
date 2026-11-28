@@ -99,7 +99,7 @@ jobs:
       # Publishes the exact .tgz uploaded above. --tag beta keeps `latest` on the stable release.
       - name: Publish to npm (beta)
         if: steps.pending.outputs.found == 'true'
-        run: npm publish out/*.tgz --tag beta --access public
+        run: npm publish ./out/*.tgz --tag beta --access public # ./ so npm reads a file, not a GitHub owner/repo
 
       - name: latest still points to a stable version
         if: steps.pending.outputs.found == 'true'
