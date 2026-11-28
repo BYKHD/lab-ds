@@ -3,6 +3,11 @@
   "version": "1.0.0",
   "description": "Daidai design system: React components on Base UI + Tailwind CSS v4.",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BYKHD/lab-ds.git",
+    "directory": "packages/ui"
+  },
   "type": "module",
   "sideEffects": [
     "**/*.css"

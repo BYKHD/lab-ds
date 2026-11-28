@@ -1,8 +1,9 @@
 name: Beta snapshot
 
 # On push to develop: run the PR checks, then build a x.y.z-beta.N snapshot
-# of @bykhd/lab-ds and upload the packed .tgz. Nothing is committed or
-# published; publishing is manual (see AGENTS.md, "Releasing").
+# of @bykhd/lab-ds, upload the packed .tgz, and publish that same .tgz to npm
+# under the `beta` dist-tag via Trusted Publishing (OIDC, no token).
+# Nothing is committed back to Git; `latest` is never touched.
 
 on:
   push:
@@ -10,7 +11,7 @@ on:
 
 concurrency:
   group: beta-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: false # never cancel a run mid-publish
 
 permissions:
   contents: read
@@ -22,6 +23,9 @@ jobs:
   snapshot:
     needs: ci
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write # npm Trusted Publishing (OIDC)
     steps:
       - uses: actions/checkout@v4
 
@@ -29,6 +33,7 @@ jobs:
         with:
           node-version: 22
           cache: npm
+          registry-url: https://registry.npmjs.org
 
       - name: Any changesets pending?
         id: pending
@@ -86,3 +91,21 @@ jobs:
           name: lab-ds-${{ steps.version.outputs.version }}
           path: out/*.tgz
           if-no-files-found: error
+
+      # Trusted Publishing needs npm >= 11.5.1; Node 22 ships npm 10.
+      - if: steps.pending.outputs.found == 'true'
+        run: npm install -g npm@11
+
+      # Publishes the exact .tgz uploaded above. --tag beta keeps `latest` on the stable release.
+      - name: Publish to npm (beta)
+        if: steps.pending.outputs.found == 'true'
+        run: npm publish out/*.tgz --tag beta --access public
+
+      - name: latest still points to a stable version
+        if: steps.pending.outputs.found == 'true'
+        run: |
+          npm view @bykhd/lab-ds dist-tags
+          latest=$(npm view @bykhd/lab-ds dist-tags.latest)
+          echo "$latest" | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+$' \
+            || { echo "::error::latest is $latest, expected a stable version"; exit 1; }
+          echo "::notice::Published ${{ steps.version.outputs.version }} to beta; latest is still $latest"
