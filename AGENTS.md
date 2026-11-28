@@ -48,11 +48,11 @@ npm pack --dry-run -w packages/ui   # check what would ship
 - Vitest + Testing Library (jsdom) cover component behaviour (`*.test.tsx`).
 - Storybook tests (`@storybook/addon-vitest`) run every story as a test, with interaction tests coming from `play` functions. Each component gets a Default story plus its key variants and states.
 - CI (`.github/workflows/ci.yml`) runs on PRs into `main` and `develop`: component file/guideline/export sync, typecheck, unit + storybook tests, build, the `"use client"` banner check, and `npm pack --dry-run`. Keep it in step with the scripts above.
-- `.github/workflows/beta.yml` runs on push to `develop`: it reuses `ci.yml` (`workflow_call`), then, if changesets are pending, builds a `x.y.z-beta.N` snapshot (N = `GITHUB_RUN_NUMBER`) and uploads the packed `.tgz` as an artifact. It edits `.changeset/config.json` only in the CI checkout and never commits or publishes.
+- `.github/workflows/beta.yml` runs on push to `develop`: it reuses `ci.yml` (`workflow_call`), then, if changesets are pending, builds a `x.y.z-beta.N` snapshot (N = `GITHUB_RUN_NUMBER`), uploads the packed `.tgz` as an artifact, and publishes that `.tgz` to npm with `--tag beta` via npm Trusted Publishing (OIDC, `id-token: write`, npm ≥ 11.5.1; no `NPM_TOKEN`). It then fails if `latest` isn't a stable version. It edits `.changeset/config.json` only in the CI checkout and never commits. The npm Trusted Publisher must name this repo and the workflow file `beta.yml`; renaming the file breaks publishing.
 
 ## Releasing (manual)
 
-Versions are managed with [Changesets](https://github.com/changesets/changesets) (`@changesets/cli`, config in `.changeset/config.json`), starting from the stable `1.0.0` on npm. Publishing is public and can't be undone, so ask the maintainer first. CI never publishes.
+Versions are managed with [Changesets](https://github.com/changesets/changesets) (`@changesets/cli`, config in `.changeset/config.json`), starting from the stable `1.0.0` on npm. Publishing is public and can't be undone, so ask the maintainer first. CI publishes betas only (merges to `develop`); stable releases are manual.
 
 **Every PR that changes `packages/ui`** adds a changeset (commit the `.changeset/*.md` it writes):
 
@@ -60,14 +60,19 @@ Versions are managed with [Changesets](https://github.com/changesets/changesets)
 npx changeset          # pick @bykhd/lab-ds, bump type, summary
 ```
 
-**Beta** (from a `develop` push with pending changesets): download the `.tgz` artifact from the "Beta snapshot" run and publish that exact file under the `beta` tag. Never publish a prerelease without `--tag beta`, or it becomes `latest`.
+**Beta** (automatic): merging a PR with a changeset into `develop` publishes `x.y.z-beta.N` under the `beta` tag (`.github/workflows/beta.yml`). A push with no pending changesets publishes nothing. Check the result:
 
 ```bash
 gh run list --workflow=beta.yml --branch develop --limit 5
-gh run download <run-id> --dir beta          # → beta/lab-ds-x.y.z-beta.N/bykhd-lab-ds-x.y.z-beta.N.tgz
-npm publish beta/lab-ds-*/bykhd-lab-ds-*.tgz --tag beta --access public
 npm view @bykhd/lab-ds dist-tags             # beta: x.y.z-beta.N, latest: still the stable version
 npm install @bykhd/lab-ds@beta               # consumers opt in to the beta
+```
+
+To publish a beta by hand instead (e.g. if the publish step failed), download the run's artifact and publish that exact file. Never publish a prerelease without `--tag beta`, or it becomes `latest`.
+
+```bash
+gh run download <run-id> --dir beta          # → beta/lab-ds-x.y.z-beta.N/bykhd-lab-ds-x.y.z-beta.N.tgz
+npm publish beta/lab-ds-*/bykhd-lab-ds-*.tgz --tag beta --access public
 ```
 
 **Stable** (on `main`, after `develop` is merged):
