@@ -4,7 +4,7 @@
 
 This file overrides the curriculum `AGENTS.md` two folders up. That file says there is no code; this folder holds the code.
 
-> **Status:** `packages/ui` is scaffolded with the 14 Daidai components from `week-1-lab` (Week 1). `apps/storybook` is set up (Week 2), and every component has stories and a `<Name>.md` usage guideline. Publishing is Week 4. When you change the setup, update this file so the commands match the real `package.json` scripts.
+> **Status:** `packages/ui` is scaffolded with the 14 Daidai components from `week-1-lab` (Week 1), plus `Tabs` from shadcn base-nova. `apps/storybook` is set up (Week 2), and every component has stories and a `<Name>.md` usage guideline. Publishing is Week 4. When you change the setup, update this file so the commands match the real `package.json` scripts.
 
 ## Layout (npm workspaces)
 
@@ -46,6 +46,7 @@ npm pack --dry-run -w packages/ui   # check what would ship
 
 - Vitest + Testing Library (jsdom) cover component behaviour (`*.test.tsx`).
 - Storybook tests (`@storybook/addon-vitest`) run every story as a test, with interaction tests coming from `play` functions. Each component gets a Default story plus its key variants and states.
+- CI (`.github/workflows/ci.yml`) runs on PRs into `main` and `develop`: component file/guideline/export sync, typecheck, unit + storybook tests, build, the `"use client"` banner check, and `npm pack --dry-run`. Keep it in step with the scripts above.
 
 ## Releasing (manual)
 
