@@ -48,15 +48,36 @@ npm pack --dry-run -w packages/ui   # check what would ship
 - Vitest + Testing Library (jsdom) cover component behaviour (`*.test.tsx`).
 - Storybook tests (`@storybook/addon-vitest`) run every story as a test, with interaction tests coming from `play` functions. Each component gets a Default story plus its key variants and states.
 - CI (`.github/workflows/ci.yml`) runs on PRs into `main` and `develop`: component file/guideline/export sync, typecheck, unit + storybook tests, build, the `"use client"` banner check, and `npm pack --dry-run`. Keep it in step with the scripts above.
+- `.github/workflows/beta.yml` runs on push to `develop`: it reuses `ci.yml` (`workflow_call`), then, if changesets are pending, builds a `x.y.z-beta.N` snapshot (N = `GITHUB_RUN_NUMBER`) and uploads the packed `.tgz` as an artifact. It edits `.changeset/config.json` only in the CI checkout and never commits or publishes.
 
 ## Releasing (manual)
 
-Publishing is public and can't be undone, so ask the maintainer first.
+Versions are managed with [Changesets](https://github.com/changesets/changesets) (`@changesets/cli`, config in `.changeset/config.json`), starting from the stable `1.0.0` on npm. Publishing is public and can't be undone, so ask the maintainer first. CI never publishes.
+
+**Every PR that changes `packages/ui`** adds a changeset (commit the `.changeset/*.md` it writes):
 
 ```bash
+npx changeset          # pick @bykhd/lab-ds, bump type, summary
+```
+
+**Beta** (from a `develop` push with pending changesets): download the `.tgz` artifact from the "Beta snapshot" run and publish that exact file under the `beta` tag. Never publish a prerelease without `--tag beta`, or it becomes `latest`.
+
+```bash
+gh run list --workflow=beta.yml --branch develop --limit 5
+gh run download <run-id> --dir beta          # → beta/lab-ds-x.y.z-beta.N/bykhd-lab-ds-x.y.z-beta.N.tgz
+npm publish beta/lab-ds-*/bykhd-lab-ds-*.tgz --tag beta --access public
+npm view @bykhd/lab-ds dist-tags             # beta: x.y.z-beta.N, latest: still the stable version
+npm install @bykhd/lab-ds@beta               # consumers opt in to the beta
+```
+
+**Stable** (on `main`, after `develop` is merged):
+
+```bash
+npx changeset version                        # bumps packages/ui/package.json, writes CHANGELOG.md, consumes changesets
+npm install                                  # sync package-lock.json, then commit the result
 npm test && npm run build && npm pack --dry-run -w packages/ui
-npm version <patch|minor|major> -w packages/ui
-npm publish -w packages/ui --access public
+npm publish -w packages/ui --access public   # goes to latest
+npm view @bykhd/lab-ds dist-tags
 ```
 
 Use semver: removing or renaming an export, a prop, or a token is a **major** change.

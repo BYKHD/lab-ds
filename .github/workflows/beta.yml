@@ -1,0 +1,88 @@
+name: Beta snapshot
+
+# On push to develop: run the PR checks, then build a x.y.z-beta.N snapshot
+# of @bykhd/lab-ds and upload the packed .tgz. Nothing is committed or
+# published; publishing is manual (see AGENTS.md, "Releasing").
+
+on:
+  push:
+    branches: [develop]
+
+concurrency:
+  group: beta-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  ci:
+    uses: ./.github/workflows/ci.yml
+
+  snapshot:
+    needs: ci
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Any changesets pending?
+        id: pending
+        run: |
+          if find .changeset -maxdepth 1 -name '*.md' ! -name README.md | grep -q .; then
+            echo "found=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "::notice::No changesets pending, skipping beta snapshot."
+          fi
+
+      - if: steps.pending.outputs.found == 'true'
+        run: npm ci
+
+      # Edits the CI checkout only; this job never commits or pushes.
+      - name: Snapshot config (not committed)
+        if: steps.pending.outputs.found == 'true'
+        run: |
+          node -e '
+            const fs = require("fs");
+            const f = ".changeset/config.json";
+            const c = JSON.parse(fs.readFileSync(f, "utf8"));
+            c.snapshot = {
+              useCalculatedVersion: true,
+              prereleaseTemplate: "{tag}." + process.env.GITHUB_RUN_NUMBER,
+            };
+            fs.writeFileSync(f, JSON.stringify(c, null, 2) + "\n");
+          '
+
+      - if: steps.pending.outputs.found == 'true'
+        run: npx changeset version --snapshot beta
+
+      - name: Version is x.y.z-beta.N
+        id: version
+        if: steps.pending.outputs.found == 'true'
+        run: |
+          v=$(node -p 'require("./packages/ui/package.json").version')
+          echo "$v" | grep -Eq "^[0-9]+\.[0-9]+\.[0-9]+-beta\.${GITHUB_RUN_NUMBER}$" \
+            || { echo "::error::Unexpected snapshot version: $v"; exit 1; }
+          echo "version=$v" >> "$GITHUB_OUTPUT"
+          echo "::notice::Snapshot version $v"
+
+      - if: steps.pending.outputs.found == 'true'
+        run: npm run build
+
+      - name: dist/index.js starts with "use client"
+        if: steps.pending.outputs.found == 'true'
+        run: head -n 1 packages/ui/dist/index.js | grep -q '"use client"'
+
+      - if: steps.pending.outputs.found == 'true'
+        run: mkdir -p out && npm pack -w packages/ui --pack-destination out
+
+      - if: steps.pending.outputs.found == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: lab-ds-${{ steps.version.outputs.version }}
+          path: out/*.tgz
+          if-no-files-found: error
