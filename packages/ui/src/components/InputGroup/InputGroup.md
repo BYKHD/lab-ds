@@ -47,7 +47,7 @@ The box is 32px tall, or grows when it holds a textarea or a top/bottom addon. D
 | `--color-primary-border-strong` | Focus border and ring |
 | `--color-base-foreground-disable`, `--color-on-base-border-disable` | Disabled background and border |
 | `--color-danger-border-strong` | Invalid border and ring |
-| `--radius-comp-input` (0.5rem) | Corners |
+| `--radius-comp-input` (15rem, fully rounded) | Corners; a group holding a `textarea` uses `--radius-md` (0.5rem) instead |
 
 Text inside uses the `Input` / `Textarea` tokens and buttons use the `Button` tokens. All color tokens have dark-mode values and switch automatically.
 

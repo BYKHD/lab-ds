@@ -40,7 +40,7 @@
     @apply h-comp-md min-w-comp-xxl px-pad-sm-nudge text-cta-m;
   }
   .size-xs {
-    @apply h-6 gap-1 rounded-sm px-2 text-xs in-data-[slot=button-group]:rounded-comp-cta has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3;
+    @apply h-6 gap-1 rounded-comp-cta px-2 text-xs has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3;
   }
   .size-sm {
     @apply h-comp-sm min-w-comp-xl px-pad-sm text-cta-s [&_svg:not([class*='size-'])]:size-comp-xxxs;
@@ -52,7 +52,7 @@
     @apply size-comp-md;
   }
   .size-icon-xs {
-    @apply size-6 rounded-sm in-data-[slot=button-group]:rounded-comp-cta [&_svg:not([class*='size-'])]:size-3;
+    @apply size-6 rounded-comp-cta [&_svg:not([class*='size-'])]:size-3;
   }
   .size-icon-sm {
     @apply size-comp-sm [&_svg:not([class*='size-'])]:size-comp-xxxs;

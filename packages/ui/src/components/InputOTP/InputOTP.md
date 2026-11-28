@@ -54,7 +54,7 @@ There are no visual variants and one size (32px boxes).
 | `--color-on-base-content-high` | Characters and caret |
 | `--color-primary-border-strong` | Active box border and ring |
 | `--color-danger-border-strong` | Invalid border and ring |
-| `--radius-comp-input` (0.5rem) | Outer corners of each group |
+| `--radius-comp-input` (15rem, fully rounded) | Outer corners of each group |
 
 All color tokens have dark-mode values and switch automatically.
 
