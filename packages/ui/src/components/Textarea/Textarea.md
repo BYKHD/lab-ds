@@ -49,7 +49,7 @@ All color tokens have dark-mode values and switch automatically.
 From the `Default` story:
 
 ```tsx
-import { Label, Textarea } from "lab-ds"
+import { Label, Textarea } from "@bykhd/lab-ds"
 
 <Label htmlFor="notes">Notes for reviewers</Label>
 <Textarea id="notes" placeholder="What should reviewers look at first?" />

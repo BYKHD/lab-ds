@@ -51,7 +51,7 @@ The corner radius is a fixed 4px, not a token. All color tokens have dark-mode v
 From the `WithDescription` story:
 
 ```tsx
-import { Checkbox, Field, FieldContent, FieldDescription, FieldLabel } from "lab-ds"
+import { Checkbox, Field, FieldContent, FieldDescription, FieldLabel } from "@bykhd/lab-ds"
 
 <Field orientation="horizontal">
   <Checkbox id="updates" defaultChecked />

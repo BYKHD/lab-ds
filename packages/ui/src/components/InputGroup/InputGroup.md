@@ -57,7 +57,7 @@ From the `WithButton` story:
 
 ```tsx
 import { IconCopy } from "@tabler/icons-react"
-import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput } from "lab-ds"
+import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput } from "@bykhd/lab-ds"
 
 <InputGroup>
   <InputGroupInput readOnly defaultValue="https://example.com/invite/8f2k" aria-label="Invite link" />

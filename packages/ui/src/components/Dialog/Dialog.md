@@ -121,7 +121,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "lab-ds"
+} from "@bykhd/lab-ds"
 
 function DeleteProjectDialog() {
   const cancelRef = React.useRef<HTMLButtonElement>(null)

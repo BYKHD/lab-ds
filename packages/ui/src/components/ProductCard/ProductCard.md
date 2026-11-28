@@ -47,7 +47,7 @@ Background, border, corners, and name styling come from `Card`. All color tokens
 From the `Default` story (the story uses an inline placeholder image instead of a URL):
 
 ```tsx
-import { ProductCard } from "lab-ds"
+import { ProductCard } from "@bykhd/lab-ds"
 
 <ProductCard
   image="/images/mug.jpg"

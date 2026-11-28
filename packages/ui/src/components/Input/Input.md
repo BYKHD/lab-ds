@@ -53,7 +53,7 @@ All color tokens have dark-mode values and switch automatically.
 From the `Default` story:
 
 ```tsx
-import { Input, Label } from "lab-ds"
+import { Input, Label } from "@bykhd/lab-ds"
 
 <Label htmlFor="project">Project name</Label>
 <Input id="project" placeholder="Website redesign" />
